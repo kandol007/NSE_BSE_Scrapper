@@ -1,0 +1,6 @@
+Reliance Industries,RELIANCE
+State Bank of India,SBIN
+TCS,TCS
+HDFC Bank,HDFCBANK
+Infosys,INFY
+Aarti Industries Limited,AARTIIND

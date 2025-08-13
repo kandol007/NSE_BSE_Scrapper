@@ -1,0 +1,40 @@
+# Python Virtual Environments
+/venv/
+/env/
+.venv/
+.env/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# PyInstaller files
+# ---------------
+*.spec
+/build/
+/dist/
+
+# Environment variables
+# ---------------------
+.env
+.env.*
+!.env.example
+
+# IDE and editor directories
+# --------------------------
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Log files
+# ---------
+*.log
+logs/
+
+# Temporary files
+# ---------------
+*.tmp
+*~
