@@ -15,13 +15,13 @@ def main():
     parser = argparse.ArgumentParser(description="High-Speed NSE Dividend & Corporate Actions Scraper")
     parser.add_argument(
         "-i", "--input",
-        default="companies_nse.txt",
-        help="Path to input file containing company name and symbol (default: companies_nse.txt)"
+        default="input/companies_nse.txt",
+        help="Path to input file containing company name and symbol (default: input/companies_nse.txt)"
     )
     parser.add_argument(
         "-o", "--output",
-        default="merged_nse_dividend_data.csv",
-        help="Path to output merged CSV file (default: merged_nse_dividend_data.csv)"
+        default="output/merged_nse_dividend_data.csv",
+        help="Path to output merged CSV file (default: output/merged_nse_dividend_data.csv)"
     )
     parser.add_argument(
         "-w", "--workers",

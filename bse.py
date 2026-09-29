@@ -15,13 +15,13 @@ def main():
     parser = argparse.ArgumentParser(description="High-Speed BSE Dividend & Corporate Actions Scraper")
     parser.add_argument(
         "-i", "--input",
-        default="companies_bse.txt",
-        help="Path to input file containing company name and scrip code (default: companies_bse.txt)"
+        default="input/companies_bse.txt",
+        help="Path to input file containing company name and scrip code (default: input/companies_bse.txt)"
     )
     parser.add_argument(
         "-o", "--output",
-        default="merged_bse_dividend_data.csv",
-        help="Path to output merged CSV file (default: merged_bse_dividend_data.csv)"
+        default="output/merged_bse_dividend_data.csv",
+        help="Path to output merged CSV file (default: output/merged_bse_dividend_data.csv)"
     )
     parser.add_argument(
         "-w", "--workers",

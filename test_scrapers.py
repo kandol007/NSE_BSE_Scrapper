@@ -21,15 +21,15 @@ class TestScrapers(unittest.TestCase):
         self.base_path = get_base_path()
 
     def test_01_read_companies_from_file(self):
-        """Test parsing of companies files."""
-        nse_file = os.path.join(self.base_path, "companies_nse.txt")
+        """Test parsing of companies files from input directory."""
+        nse_file = os.path.join(self.base_path, "input", "companies_nse.txt")
         companies = read_companies_from_file(nse_file)
         self.assertIsInstance(companies, dict)
         self.assertGreater(len(companies), 0)
         self.assertIn("Reliance Industries", companies)
         self.assertEqual(companies["Reliance Industries"], "RELIANCE")
 
-        bse_file = os.path.join(self.base_path, "companies_bse.txt")
+        bse_file = os.path.join(self.base_path, "input", "companies_bse.txt")
         bse_companies = read_companies_from_file(bse_file)
         self.assertIsInstance(bse_companies, dict)
         self.assertGreater(len(bse_companies), 0)
@@ -70,7 +70,7 @@ class TestScrapers(unittest.TestCase):
         test_df = pd.DataFrame([
             {"Company": "Test Corp", "Symbol": "TEST", "Dividend": "10.0"}
         ])
-        test_out = os.path.join(self.base_path, "test_output.csv")
+        test_out = os.path.join(self.base_path, "output", "test_output.csv")
         try:
             saved = save_merged_csv(test_df, test_out)
             self.assertTrue(saved)

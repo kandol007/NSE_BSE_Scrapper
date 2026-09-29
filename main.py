@@ -64,23 +64,23 @@ def main():
     )
     parser.add_argument(
         "--nse-input",
-        default="companies_nse.txt",
-        help="Input company list for NSE"
+        default="input/companies_nse.txt",
+        help="Input company list for NSE (default: input/companies_nse.txt)"
     )
     parser.add_argument(
         "--bse-input",
-        default="companies_bse.txt",
-        help="Input company list for BSE"
+        default="input/companies_bse.txt",
+        help="Input company list for BSE (default: input/companies_bse.txt)"
     )
     parser.add_argument(
         "--nse-output",
-        default="merged_nse_dividend_data.csv",
-        help="Output CSV file for NSE"
+        default="output/merged_nse_dividend_data.csv",
+        help="Output CSV file for NSE (default: output/merged_nse_dividend_data.csv)"
     )
     parser.add_argument(
         "--bse-output",
-        default="merged_bse_dividend_data.csv",
-        help="Output CSV file for BSE"
+        default="output/merged_bse_dividend_data.csv",
+        help="Output CSV file for BSE (default: output/merged_bse_dividend_data.csv)"
     )
     parser.add_argument(
         "-w", "--workers",
@@ -88,8 +88,56 @@ def main():
         default=4,
         help="Number of worker threads per exchange"
     )
+    parser.add_argument(
+        "--export-icici-tata",
+        action="store_true",
+        help="Pull latest NSE/BSE lists, verify links, and export ICICI & Tata Excel"
+    )
+    parser.add_argument(
+        "--export-dividends",
+        action="store_true",
+        help="Scrape all dividend & corporate action records for Tata & ICICI companies into an Excel workbook"
+    )
+    parser.add_argument(
+        "--export-unclaimed-shareholders",
+        action="store_true",
+        help="Crawl and export shareholder-level unclaimed dividend records with names for Tata & ICICI companies"
+    )
+    parser.add_argument(
+        "--export-all",
+        action="store_true",
+        help="Run all 3 extraction pipelines (Verified Companies, Corporate Dividends, Shareholder Unclaimed Dividends)"
+    )
 
     args = parser.parse_args()
+
+    if args.export_all:
+        from pull_and_verify_companies import run_pipeline
+        from download_dividend_data_xlsx import main as run_dividend_export
+        from scrape_shareholder_unclaimed_dividends import main as run_shareholder_export
+
+        print("\n🚀 [1/3] Running Output Type 1: Verified Companies Pipeline...")
+        run_pipeline(workers=args.workers if args.workers > 4 else 8)
+        print("\n🚀 [2/3] Running Output Type 2: Corporate Dividend Declarations Pipeline...")
+        run_dividend_export()
+        print("\n🚀 [3/3] Running Output Type 3: Shareholder Unclaimed Dividends Pipeline...")
+        run_shareholder_export()
+        return
+
+    if args.export_icici_tata:
+        from pull_and_verify_companies import run_pipeline
+        run_pipeline(workers=args.workers if args.workers > 4 else 8)
+        return
+
+    if args.export_dividends:
+        from download_dividend_data_xlsx import main as run_dividend_export
+        run_dividend_export()
+        return
+
+    if args.export_unclaimed_shareholders:
+        from scrape_shareholder_unclaimed_dividends import main as run_shareholder_export
+        run_shareholder_export()
+        return
     base_path = get_base_path()
 
     nse_in = args.nse_input if os.path.isabs(args.nse_input) else os.path.join(base_path, args.nse_input)

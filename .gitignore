@@ -38,3 +38,9 @@ logs/
 # ---------------
 *.tmp
 *~
+~$*.xlsx
+.DS_Store
+
+# Data and Output directories
+input/
+output/

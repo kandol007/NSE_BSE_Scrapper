@@ -28,11 +28,16 @@ def read_companies_from_file(filename: str) -> Dict[str, str]:
     Company Name,Symbol (or Scrip Code)
     """
     file_path = filename if os.path.isabs(filename) else os.path.join(get_base_path(), filename)
-    companies = {}
     if not os.path.exists(file_path):
-        print(f"❌ Error: File '{file_path}' not found.")
-        return companies
+        # Fallback to input/ directory if file exists there
+        alt_path = os.path.join(get_base_path(), "input", os.path.basename(filename))
+        if os.path.exists(alt_path):
+            file_path = alt_path
+        else:
+            print(f"❌ Error: File '{file_path}' not found (also checked '{alt_path}').")
+            return {}
 
+    companies = {}
     with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
         for line_num, line in enumerate(f, start=1):
             line_str = line.strip()
@@ -273,10 +278,13 @@ class BSEScraper:
 
 
 def save_merged_csv(df: pd.DataFrame, output_path: str) -> bool:
-    """Saves DataFrame to CSV with UTF-8 encoding."""
+    """Saves DataFrame to CSV with UTF-8 encoding, ensuring output directory exists."""
     if df.empty:
         print("⚠️ No data was scraped to save.")
         return False
+    out_dir = os.path.dirname(os.path.abspath(output_path))
+    if out_dir:
+        os.makedirs(out_dir, exist_ok=True)
     df.to_csv(output_path, index=False, encoding="utf-8")
     print(f"💾 Successfully saved {len(df)} records to: {output_path}")
     return True
